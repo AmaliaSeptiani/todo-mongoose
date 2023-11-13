@@ -60,4 +60,25 @@ module.exports = {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
+  updateTodo: async (req, res) => {
+    const { todoId } = req.params;
+    const newData = req.body;
+
+    try {
+      
+      const todo = await Todo.findById(todoId);
+      if (!todo) {
+        return res.status(404).json({ message: 'Todo not found' });
+      }
+
+      
+      await Todo.findByIdAndUpdate(todoId, newData);
+
+      res.json({ message: 'Todo updated successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+  
 }
