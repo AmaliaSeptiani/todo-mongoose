@@ -12,8 +12,24 @@ module.exports = {
     })
   },
 
-  getTodoById: (req, res) => {
+  getTodoById: async (req, res) => {
+    const { todoId } = req.params;
 
+    try {
+      const todo = await Todo.findById(todoId).populate('userID', ['_id', 'name']);
+
+      if (!todo) {
+        return res.status(404).json({ message: 'Todo not found' });
+      }
+
+      res.json({
+        message: 'Successfully retrieved todo by ID',
+        data: todo,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
   },
 
   createTodo: async (req, res) => {
@@ -25,18 +41,23 @@ module.exports = {
       message: "berhasil membuat data todo"
     })
   },
-//   deleteTodo: async (req, res) => {
-//     try{
-//     const {todoId} = req.params;
-//     const todo = await Todo.findById(todoId);
-//     if (!todo){
-//         return res.status(404).json({message: 'Todo not found'});
-//     }
-//     await Todo.findByIdAndDelete(todoId);
-//     res.json({message: 'Todo deleted successfully'});
-//     } catch (errror){
-//         console.error(error);
-//         res.status(500).json({message: 'Internal server error'});
-//     }
-// }
+  deleteTodo: async (req, res) => {
+    const { todoId } = req.params;
+
+    try {
+      
+      const todos = await Todo.findById(todoId);
+      if (!todos) {
+        return res.status(404).json({ message: 'Todo not found' });
+      }
+
+    
+      await Todo.findByIdAndDelete(todoId);
+
+      res.json({ message: 'Todo deleted successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  },
 }
