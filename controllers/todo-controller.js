@@ -80,5 +80,17 @@ module.exports = {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
-  
+  deleteAllTodos: async (req, res) => {
+    const user = req.user;
+
+    try {
+      
+      await Todo.deleteMany({ userID: user.id });
+
+      res.json({ message: 'All todos deleted successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  },
 }
