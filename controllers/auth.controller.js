@@ -1,6 +1,7 @@
 require("dotenv").config()
 const jwt = require('jsonwebtoken');
-const User = require("../models/user")
+const User = require("../models/user");
+const bcrypt = require('bcrypt');
 
 module.exports = {
   login: async (req, res) => {
@@ -34,7 +35,15 @@ module.exports = {
         throw new Error('Email is already registered');
       }
 
-      const newUser = await User.create(userData);
+      const hashedPassword = await bcrypt.hash(userData.password, 3);
+
+
+      const newUser = await User.create({
+        email: userData.email,
+        password: hashedPassword,
+      });
+
+    
       const token = jwt.sign({ id: newUser._id, email: newUser.email }, process.env.JWT_KEY);
 
       res.json({
@@ -47,5 +56,4 @@ module.exports = {
       res.status(400).json({ message: error.message });
     }
   },
-
 }
