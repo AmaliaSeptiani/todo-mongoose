@@ -5,13 +5,14 @@ const {
   getAllUser,
   getUserById,
   createUser,
-  getUserTodos
+  getUserTodos,
 } = require("../controllers/user.controller");
 const verifyToken = require("../middleware/auth");
 
+
 route.get("/", getAllUser);
 route.get("/:id", verifyToken, getUserById);
-route.get("/:id/todos", verifyToken ,getUserTodos)
+route.get("/:id/todos", verifyToken, getUserTodos);
 route.post("/", createUser);
 
 module.exports = route;

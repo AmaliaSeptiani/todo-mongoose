@@ -35,4 +35,5 @@ module.exports = {
       message: "berhasil membuat data user"
     })
   },
+
 }

@@ -25,7 +25,27 @@ module.exports = {
     }
   },
 
-  regis: (req, res) => {
-    
-  }
+  regis: async (req, res) => {
+    try {
+      const userData = req.body;
+
+      const existingUser = await User.findOne({ email: userData.email });
+      if (existingUser) {
+        throw new Error('Email is already registered');
+      }
+
+      const newUser = await User.create(userData);
+      const token = jwt.sign({ id: newUser._id, email: newUser.email }, process.env.JWT_KEY);
+
+      res.json({
+        message: 'Registration successful',
+        userId: newUser._id,
+        token,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(400).json({ message: error.message });
+    }
+  },
+
 }
