@@ -14,8 +14,9 @@ const verifyToken = require("../middleware/auth");
 route.get("/", verifyToken, getAllTodo);
 route.get("/:todoId", getTodoById);
 route.post("/", createTodo);
-route.delete("/:todoId", deleteTodo);
-route.post(":/todoId", updateTodo);
+// yg / di atas dr /:id
 route.delete("/", verifyToken, deleteAllTodos);
+route.delete("/:todoId", deleteTodo);
+route.post("/:todoId", updateTodo);
 
 module.exports = route;
