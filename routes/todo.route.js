@@ -12,10 +12,10 @@ const {
 const verifyToken = require("../middleware/auth");
 
 route.get("/", verifyToken, getAllTodo);
-route.get("/:id", getTodoById);
+route.get("/:todoId", getTodoById);
 route.post("/", createTodo);
-route.delete("/:id", deleteTodo);
-route.post(":/id", updateTodo);
+route.delete("/:todoId", deleteTodo);
+route.post(":/todoId", updateTodo);
 route.delete("/", verifyToken, deleteAllTodos);
 
 module.exports = route;
